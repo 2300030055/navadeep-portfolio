@@ -6,7 +6,7 @@
    CONFIGURATION — Edit these values easily
    ============================================ */
 const CONFIG = {
-  API_BASE_URL: 'http://localhost:8080',
+  API_BASE_URL: 'http://localhost:8080', // Production: https://your-backend.onrender.com
 
   GITHUB_URL: 'https://github.com/2300030055',
   LINKEDIN_URL: 'https://www.linkedin.com/in/avanigadda-navadeep-7a46b4301/',
