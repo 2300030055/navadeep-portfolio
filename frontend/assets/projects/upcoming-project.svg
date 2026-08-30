@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.15"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="#111827"/>
+  <rect width="800" height="500" fill="url(#g)"/>
+  <rect x="160" y="120" width="480" height="260" rx="12" fill="#151c2e" stroke="#8b5cf6" stroke-width="1" stroke-dasharray="8 4" opacity="0.6"/>
+  <text x="400" y="240" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="600" fill="#8b5cf6">Coming Soon</text>
+  <text x="400" y="280" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="16" fill="#64748b">UI/UX Project in Development</text>
+  <text x="400" y="470" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="18" fill="#94a3b8">Upcoming UI/UX Project</text>
+</svg>
