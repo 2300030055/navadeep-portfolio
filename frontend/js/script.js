@@ -207,28 +207,31 @@ function initActiveNavHighlight() {
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-link');
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
+  function updateActiveNav() {
+    const navbarHeight = 80;
+    let currentSection = '';
 
-          navLinks.forEach(link => {
-            link.classList.toggle(
-              'active',
-              link.dataset.section === id
-            );
-          });
-        }
-      });
-    },
-    {
-      threshold: 0.3,
-      rootMargin: `-${64}px 0px -50% 0px`
-    }
-  );
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
 
-  sections.forEach(section => observer.observe(section));
+      if (rect.top <= navbarHeight + 120) {
+        currentSection = section.id;
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.toggle(
+        'active',
+        link.dataset.section === currentSection
+      );
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveNav, {
+    passive: true
+  });
+
+  updateActiveNav();
 }
 
 
