@@ -209,12 +209,18 @@ function initActiveNavHighlight() {
 
   function updateActiveNav() {
     const navbarHeight = 80;
+    const checkPosition = window.scrollY + navbarHeight + 100;
+
     let currentSection = '';
 
     sections.forEach(section => {
-      const rect = section.getBoundingClientRect();
+      const sectionTop = section.offsetTop;
+      const sectionBottom = sectionTop + section.offsetHeight;
 
-      if (rect.top <= navbarHeight + 120) {
+      if (
+        checkPosition >= sectionTop &&
+        checkPosition < sectionBottom
+      ) {
         currentSection = section.id;
       }
     });
@@ -230,6 +236,8 @@ function initActiveNavHighlight() {
   window.addEventListener('scroll', updateActiveNav, {
     passive: true
   });
+
+  window.addEventListener('resize', updateActiveNav);
 
   updateActiveNav();
 }
