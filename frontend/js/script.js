@@ -13,7 +13,10 @@ const CONFIG = {
   WORDPRESS_PROJECT_URL: 'https://webappsklsac.wordpress.com/',
   AI_PROJECT_URL: 'https://udify.app/chat/OioTzjVue8VPxWQm',
 
-  FORMSPREE_URL: 'https://formspree.io/f/maeyojaj'
+  FORMSPREE_URL: 'https://formspree.io/f/maeyojaj',
+
+  SUPABASE_URL: 'https://zxqgcvavsihtzijspjyv.supabase.co',
+  SUPABASE_KEY: 'sb_publishable_Ali8abDksQoTPmSLvExVzg_UdxsoXY9'
 };
 
 
@@ -30,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initActiveNavHighlight();
   initImageFallbacks();
   initContactForm();
+  initLikeButton();
 });
 
 
@@ -303,6 +307,8 @@ function initContactForm() {
   const nameError = document.getElementById('nameError');
   const emailError = document.getElementById('emailError');
   const messageError = document.getElementById('messageError');
+
+  if (!form) return;
 
   let isSubmitting = false;
 
@@ -582,4 +588,156 @@ function initContactForm() {
       );
     }
   }
+}
+
+
+/* ============================================
+   Portfolio Like Button — Supabase
+   ============================================ */
+function initLikeButton() {
+
+  const likeButton = document.getElementById('likeButton');
+  const likeIcon = document.getElementById('likeIcon');
+  const likeText = document.getElementById('likeText');
+  const likeCount = document.getElementById('likeCount');
+  const likeStatus = document.getElementById('likeStatus');
+
+  if (!likeButton) return;
+
+  if (!window.supabase) {
+    console.error('Supabase library is not loaded.');
+    return;
+  }
+
+  const supabaseClient = window.supabase.createClient(
+    CONFIG.SUPABASE_URL,
+    CONFIG.SUPABASE_KEY
+  );
+
+
+  /* ============================================
+     Create unique visitor ID
+     ============================================ */
+  let visitorId =
+    localStorage.getItem('portfolioVisitorId');
+
+  if (!visitorId) {
+
+    visitorId = crypto.randomUUID();
+
+    localStorage.setItem(
+      'portfolioVisitorId',
+      visitorId
+    );
+  }
+
+
+  /* ============================================
+     Check if visitor already liked
+     ============================================ */
+  const alreadyLiked =
+    localStorage.getItem('portfolioLiked') === 'true';
+
+  if (alreadyLiked) {
+
+    likeButton.classList.add('liked');
+
+    likeIcon.textContent = '♥';
+
+    likeText.textContent = 'Liked';
+  }
+
+
+  /* ============================================
+     Load total likes
+     ============================================ */
+  async function loadLikeCount() {
+
+    const { data, error } =
+      await supabaseClient.rpc(
+        'get_portfolio_like_count'
+      );
+
+    if (error) {
+
+      console.error(
+        'Like count error:',
+        error
+      );
+
+      likeStatus.textContent =
+        'Unable to load likes.';
+
+      return;
+    }
+
+    likeCount.textContent = data ?? 0;
+  }
+
+
+  /* ============================================
+     Add Like
+     ============================================ */
+  likeButton.addEventListener('click', async () => {
+
+    if (
+      localStorage.getItem('portfolioLiked') === 'true'
+    ) {
+      return;
+    }
+
+
+    likeButton.disabled = true;
+
+    likeStatus.textContent =
+      'Adding like...';
+
+
+    const { data, error } =
+      await supabaseClient.rpc(
+        'add_portfolio_like',
+        {
+          p_visitor_id: visitorId
+        }
+      );
+
+
+    if (error) {
+
+      console.error(
+        'Like error:',
+        error
+      );
+
+      likeStatus.textContent =
+        'Unable to add like. Please try again.';
+
+      likeButton.disabled = false;
+
+      return;
+    }
+
+
+    localStorage.setItem(
+      'portfolioLiked',
+      'true'
+    );
+
+
+    likeButton.classList.add('liked');
+
+    likeIcon.textContent = '♥';
+
+    likeText.textContent = 'Liked';
+
+    likeCount.textContent = data ?? 0;
+
+    likeStatus.textContent = '';
+  });
+
+
+  /* ============================================
+     Initial like count
+     ============================================ */
+  loadLikeCount();
 }
