@@ -1312,3 +1312,8 @@ ul {
   }
 
 }
+#profileImage {
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: auto;
+}
