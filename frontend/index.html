@@ -353,6 +353,23 @@
       </div>
     </section>
 
+
+    <!-- Portfolio Like -->
+    <section class="like-section" id="like">
+      <div class="container">
+        <h2 class="section-heading reveal">Enjoyed My Portfolio?</h2>
+        <p class="like-description reveal">If you found it interesting, leave a like.</p>
+
+        <button id="likeButton" class="like-button reveal" type="button">
+          <span id="likeIcon" aria-hidden="true">♡</span>
+          <span id="likeText">Like Portfolio</span>
+          <span id="likeCount">0</span>
+        </button>
+
+        <p id="likeStatus" class="like-status" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
   </main>
 
   <!-- Footer -->
@@ -362,6 +379,7 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/script.js"></script>
 </body>
 </html>
