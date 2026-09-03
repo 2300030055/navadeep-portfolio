@@ -887,32 +887,3 @@ function protectProfileImage() {
     }
   );
 
-
-  /* Prevent selecting */
-  profileImage.style.userSelect = 'none';
-
-  profileImage.style.webkitUserDrag = 'none';
-}
-function protectProfileImage() {
-  const profileImage =
-    document.getElementById('profileImage');
-
-  if (!profileImage) return;
-
-  profileImage.addEventListener(
-    'contextmenu',
-    (event) => {
-      event.preventDefault();
-    }
-  );
-
-  profileImage.addEventListener(
-    'dragstart',
-    (event) => {
-      event.preventDefault();
-    }
-  );
-
-  profileImage.style.userSelect = 'none';
-  profileImage.style.webkitUserDrag = 'none';
-}
