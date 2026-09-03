@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initImageFallbacks();
   initContactForm();
   initLikeButton();
+  protectProfileImage();
 });
 
 
@@ -71,6 +72,8 @@ function applyConfigLinks() {
 function initNavbar() {
   const navbar = document.getElementById('navbar');
 
+  if (!navbar) return;
+
   const handleScroll = () => {
     if (window.scrollY > 20) {
       navbar.classList.add('scrolled');
@@ -79,7 +82,10 @@ function initNavbar() {
     }
   };
 
-  window.addEventListener('scroll', handleScroll, { passive: true });
+  window.addEventListener('scroll', handleScroll, {
+    passive: true
+  });
+
   handleScroll();
 }
 
@@ -90,10 +96,14 @@ function initNavbar() {
 function initMobileMenu() {
   const toggle = document.getElementById('navToggle');
   const navLinks = document.getElementById('navLinks');
+
+  if (!toggle || !navLinks) return;
+
   const links = navLinks.querySelectorAll('.nav-link');
 
   toggle.addEventListener('click', () => {
     const isOpen = navLinks.classList.toggle('open');
+
     toggle.classList.toggle('active', isOpen);
     toggle.setAttribute('aria-expanded', isOpen);
   });
@@ -130,7 +140,9 @@ function initSmoothScroll() {
 
       if (target) {
         e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth' });
+        target.scrollIntoView({
+          behavior: 'smooth'
+        });
       }
     });
   });
@@ -182,10 +194,13 @@ function initRoleAnimation() {
 function initScrollReveal() {
   const reveals = document.querySelectorAll('.reveal');
 
+  if (!reveals.length) return;
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry, index) => {
         if (entry.isIntersecting) {
+
           setTimeout(() => {
             entry.target.classList.add('visible');
           }, index * 80);
@@ -213,13 +228,16 @@ function initActiveNavHighlight() {
 
   function updateActiveNav() {
     const navbarHeight = 80;
-    const checkPosition = window.scrollY + navbarHeight + 100;
+
+    const checkPosition =
+      window.scrollY + navbarHeight + 100;
 
     let currentSection = '';
 
     sections.forEach(section => {
       const sectionTop = section.offsetTop;
-      const sectionBottom = sectionTop + section.offsetHeight;
+      const sectionBottom =
+        sectionTop + section.offsetHeight;
 
       if (
         checkPosition >= sectionTop &&
@@ -251,8 +269,11 @@ function initActiveNavHighlight() {
    Image fallbacks for missing assets
    ============================================ */
 function initImageFallbacks() {
-  const profileImg = document.getElementById('profileImage');
-  const profilePlaceholder = document.getElementById('profilePlaceholder');
+  const profileImg =
+    document.getElementById('profileImage');
+
+  const profilePlaceholder =
+    document.getElementById('profilePlaceholder');
 
   if (profileImg && profilePlaceholder) {
 
@@ -261,33 +282,51 @@ function initImageFallbacks() {
       profilePlaceholder.classList.add('visible');
     };
 
-    profileImg.addEventListener('error', showProfilePlaceholder);
+    profileImg.addEventListener(
+      'error',
+      showProfilePlaceholder
+    );
 
-    if (profileImg.complete && profileImg.naturalHeight === 0) {
+    if (
+      profileImg.complete &&
+      profileImg.naturalHeight === 0
+    ) {
       showProfilePlaceholder();
     }
   }
 
-  document.querySelectorAll('.project-image').forEach(img => {
+  document
+    .querySelectorAll('.project-image')
+    .forEach(img => {
 
-    const wrapper = img.closest('.project-image-wrapper');
-    const placeholder =
-      wrapper?.querySelector('.project-image-placeholder');
+      const wrapper =
+        img.closest('.project-image-wrapper');
 
-    const showPlaceholder = () => {
-      img.classList.add('hidden');
+      const placeholder =
+        wrapper?.querySelector(
+          '.project-image-placeholder'
+        );
 
-      if (placeholder) {
-        placeholder.classList.add('visible');
+      const showPlaceholder = () => {
+        img.classList.add('hidden');
+
+        if (placeholder) {
+          placeholder.classList.add('visible');
+        }
+      };
+
+      img.addEventListener(
+        'error',
+        showPlaceholder
+      );
+
+      if (
+        img.complete &&
+        img.naturalHeight === 0
+      ) {
+        showPlaceholder();
       }
-    };
-
-    img.addEventListener('error', showPlaceholder);
-
-    if (img.complete && img.naturalHeight === 0) {
-      showPlaceholder();
-    }
-  });
+    });
 }
 
 
@@ -296,17 +335,32 @@ function initImageFallbacks() {
    ============================================ */
 function initContactForm() {
 
-  const form = document.getElementById('contactForm');
-  const submitBtn = document.getElementById('submitBtn');
-  const formStatus = document.getElementById('formStatus');
+  const form =
+    document.getElementById('contactForm');
 
-  const nameInput = document.getElementById('name');
-  const emailInput = document.getElementById('email');
-  const messageInput = document.getElementById('message');
+  const submitBtn =
+    document.getElementById('submitBtn');
 
-  const nameError = document.getElementById('nameError');
-  const emailError = document.getElementById('emailError');
-  const messageError = document.getElementById('messageError');
+  const formStatus =
+    document.getElementById('formStatus');
+
+  const nameInput =
+    document.getElementById('name');
+
+  const emailInput =
+    document.getElementById('email');
+
+  const messageInput =
+    document.getElementById('message');
+
+  const nameError =
+    document.getElementById('nameError');
+
+  const emailError =
+    document.getElementById('emailError');
+
+  const messageError =
+    document.getElementById('messageError');
 
   if (!form) return;
 
@@ -342,23 +396,38 @@ function initContactForm() {
 
       const formData = new FormData();
 
-      formData.append('name', nameInput.value.trim());
-      formData.append('email', emailInput.value.trim());
-      formData.append('message', messageInput.value.trim());
+      formData.append(
+        'name',
+        nameInput.value.trim()
+      );
+
+      formData.append(
+        'email',
+        emailInput.value.trim()
+      );
+
+      formData.append(
+        'message',
+        messageInput.value.trim()
+      );
 
 
-      const response = await fetch(CONFIG.FORMSPREE_URL, {
-        method: 'POST',
+      const response = await fetch(
+        CONFIG.FORMSPREE_URL,
+        {
+          method: 'POST',
 
-        headers: {
-          'Accept': 'application/json'
-        },
+          headers: {
+            'Accept': 'application/json'
+          },
 
-        body: formData
-      });
+          body: formData
+        }
+      );
 
 
-      const data = await response.json().catch(() => ({}));
+      const data =
+        await response.json().catch(() => ({}));
 
 
       console.log(
@@ -431,9 +500,14 @@ function initContactForm() {
 
     let valid = true;
 
-    const name = nameInput.value.trim();
-    const email = emailInput.value.trim();
-    const message = messageInput.value.trim();
+    const name =
+      nameInput.value.trim();
+
+    const email =
+      emailInput.value.trim();
+
+    const message =
+      messageInput.value.trim();
 
 
     if (!name) {
@@ -527,7 +601,11 @@ function initContactForm() {
   /* ============================================
      Show validation error
      ============================================ */
-  function showError(input, errorEl, message) {
+  function showError(
+    input,
+    errorEl,
+    message
+  ) {
 
     input.classList.add('error');
 
@@ -565,6 +643,7 @@ function initContactForm() {
   function displayServerErrors(errors) {
 
     if (errors.name) {
+
       showError(
         nameInput,
         nameError,
@@ -572,7 +651,9 @@ function initContactForm() {
       );
     }
 
+
     if (errors.email) {
+
       showError(
         emailInput,
         emailError,
@@ -580,7 +661,9 @@ function initContactForm() {
       );
     }
 
+
     if (errors.message) {
+
       showError(
         messageInput,
         messageError,
@@ -596,34 +679,55 @@ function initContactForm() {
    ============================================ */
 function initLikeButton() {
 
-  const likeButton = document.getElementById('likeButton');
-  const likeIcon = document.getElementById('likeIcon');
-  const likeText = document.getElementById('likeText');
-  const likeCount = document.getElementById('likeCount');
-  const likeStatus = document.getElementById('likeStatus');
+  const likeButton =
+    document.getElementById('likeButton');
+
+  const likeIcon =
+    document.getElementById('likeIcon');
+
+  const likeText =
+    document.getElementById('likeText');
+
+  const likeCount =
+    document.getElementById('likeCount');
+
+  const likeStatus =
+    document.getElementById('likeStatus');
+
 
   if (!likeButton) return;
 
+
   if (!window.supabase) {
-    console.error('Supabase library is not loaded.');
+
+    console.error(
+      'Supabase library is not loaded.'
+    );
+
     return;
   }
 
-  const supabaseClient = window.supabase.createClient(
-    CONFIG.SUPABASE_URL,
-    CONFIG.SUPABASE_KEY
-  );
+
+  const supabaseClient =
+    window.supabase.createClient(
+      CONFIG.SUPABASE_URL,
+      CONFIG.SUPABASE_KEY
+    );
 
 
   /* ============================================
      Create unique visitor ID
      ============================================ */
   let visitorId =
-    localStorage.getItem('portfolioVisitorId');
+    localStorage.getItem(
+      'portfolioVisitorId'
+    );
+
 
   if (!visitorId) {
 
-    visitorId = crypto.randomUUID();
+    visitorId =
+      crypto.randomUUID();
 
     localStorage.setItem(
       'portfolioVisitorId',
@@ -636,7 +740,10 @@ function initLikeButton() {
      Check if visitor already liked
      ============================================ */
   const alreadyLiked =
-    localStorage.getItem('portfolioLiked') === 'true';
+    localStorage.getItem(
+      'portfolioLiked'
+    ) === 'true';
+
 
   if (alreadyLiked) {
 
@@ -658,6 +765,7 @@ function initLikeButton() {
         'get_portfolio_like_count'
       );
 
+
     if (error) {
 
       console.error(
@@ -671,69 +779,77 @@ function initLikeButton() {
       return;
     }
 
-    likeCount.textContent = data ?? 0;
+
+    likeCount.textContent =
+      data ?? 0;
   }
 
 
   /* ============================================
      Add Like
      ============================================ */
-  likeButton.addEventListener('click', async () => {
+  likeButton.addEventListener(
+    'click',
+    async () => {
 
-    if (
-      localStorage.getItem('portfolioLiked') === 'true'
-    ) {
-      return;
-    }
-
-
-    likeButton.disabled = true;
-
-    likeStatus.textContent =
-      'Adding like...';
+      if (
+        localStorage.getItem(
+          'portfolioLiked'
+        ) === 'true'
+      ) {
+        return;
+      }
 
 
-    const { data, error } =
-      await supabaseClient.rpc(
-        'add_portfolio_like',
-        {
-          p_visitor_id: visitorId
-        }
-      );
-
-
-    if (error) {
-
-      console.error(
-        'Like error:',
-        error
-      );
+      likeButton.disabled = true;
 
       likeStatus.textContent =
-        'Unable to add like. Please try again.';
+        'Adding like...';
 
-      likeButton.disabled = false;
 
-      return;
+      const { data, error } =
+        await supabaseClient.rpc(
+          'add_portfolio_like',
+          {
+            p_visitor_id: visitorId
+          }
+        );
+
+
+      if (error) {
+
+        console.error(
+          'Like error:',
+          error
+        );
+
+        likeStatus.textContent =
+          'Unable to add like. Please try again.';
+
+        likeButton.disabled = false;
+
+        return;
+      }
+
+
+      localStorage.setItem(
+        'portfolioLiked',
+        'true'
+      );
+
+
+      likeButton.classList.add('liked');
+
+      likeIcon.textContent = '♥';
+
+      likeText.textContent = 'Liked';
+
+      likeCount.textContent =
+        data ?? 0;
+
+      likeStatus.textContent = '';
     }
-
-
-    localStorage.setItem(
-      'portfolioLiked',
-      'true'
-    );
-
-
-    likeButton.classList.add('liked');
-
-    likeIcon.textContent = '♥';
-
-    likeText.textContent = 'Liked';
-
-    likeCount.textContent = data ?? 0;
-
-    likeStatus.textContent = '';
-  });
+  );
 
 
   /* ============================================
@@ -741,22 +857,39 @@ function initLikeButton() {
      ============================================ */
   loadLikeCount();
 }
+
+
+/* ============================================
+   Protect Profile Image
+   ============================================ */
 function protectProfileImage() {
-  const profileImage = document.getElementById('profileImage');
+
+  const profileImage =
+    document.getElementById('profileImage');
 
   if (!profileImage) return;
 
-  // Prevent right-click
-  profileImage.addEventListener('contextmenu', (event) => {
-    event.preventDefault();
-  });
 
-  // Prevent dragging
-  profileImage.addEventListener('dragstart', (event) => {
-    event.preventDefault();
-  });
+  /* Prevent right-click */
+  profileImage.addEventListener(
+    'contextmenu',
+    (event) => {
+      event.preventDefault();
+    }
+  );
 
-  // Prevent selecting
+
+  /* Prevent dragging */
+  profileImage.addEventListener(
+    'dragstart',
+    (event) => {
+      event.preventDefault();
+    }
+  );
+
+
+  /* Prevent selecting */
   profileImage.style.userSelect = 'none';
+
   profileImage.style.webkitUserDrag = 'none';
 }
