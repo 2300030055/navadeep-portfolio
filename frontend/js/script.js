@@ -863,27 +863,20 @@ function initLikeButton() {
    Protect Profile Image
    ============================================ */
 function protectProfileImage() {
-
-  const profileImage =
-    document.getElementById('profileImage');
+  const profileImage = document.getElementById('profileImage');
 
   if (!profileImage) return;
 
+  // Prevent right-click on profile image
+  profileImage.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+  });
 
-  /* Prevent right-click */
-  profileImage.addEventListener(
-    'contextmenu',
-    (event) => {
-      event.preventDefault();
-    }
-  );
+  // Prevent dragging the profile image
+  profileImage.addEventListener('dragstart', (event) => {
+    event.preventDefault();
+  });
 
-
-  /* Prevent dragging */
-  profileImage.addEventListener(
-    'dragstart',
-    (event) => {
-      event.preventDefault();
-    }
-  );
-
+  profileImage.style.userSelect = 'none';
+  profileImage.style.webkitUserDrag = 'none';
+}
