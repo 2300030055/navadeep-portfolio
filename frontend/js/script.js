@@ -741,3 +741,22 @@ function initLikeButton() {
      ============================================ */
   loadLikeCount();
 }
+function protectProfileImage() {
+  const profileImage = document.getElementById('profileImage');
+
+  if (!profileImage) return;
+
+  // Prevent right-click
+  profileImage.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+  });
+
+  // Prevent dragging
+  profileImage.addEventListener('dragstart', (event) => {
+    event.preventDefault();
+  });
+
+  // Prevent selecting
+  profileImage.style.userSelect = 'none';
+  profileImage.style.webkitUserDrag = 'none';
+}
